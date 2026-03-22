@@ -3,16 +3,17 @@ session_start();
 
 // --- CONFIGURAZIONE DINAMICA ---
 $CONFIG = [
-    'password'    => "Basile_Cambiami",      // Password area admin
-    'titolo_sito' => "Strumenti Digitali – A.s. 2025/26",
-    'istituto'    => "I.C. Capuana-De Amicis – A.s. 2025/26",
-    'footer_text' => "© 2026 - Sviluppo: Sebastiano Basile",
-    'json_file'   => "database.json",
-    'upload_dir'  => "uploads/",
-    'cols_desktop' => "2",
-    'footer_text2' => "Realizzato per il 3° I.C. Capuana-DeAmicis",
-    'sottotitolo'  => "capuanadeamicis.it/focus – Accesso Rapido agli Strumenti Digitali d'Istituto",
-    'novita_giorni' => "21"
+    'password'    => 'Cambiami',      // Password area admin
+    'titolo_sito' => 'Strumenti Digitali – A.s. 2025/26',
+    'istituto'    => 'I.C. Capuana-De Amicis – A.s. 2025/26',
+    'footer_text' => '© 2026 - Sviluppo: Sebastiano Basile',
+    'json_file'   => 'database.json',
+    'upload_dir'  => 'uploads/',
+    'cols_desktop' => '3',
+    'footer_text2' => 'Realizzato per il 3° I.C. Capuana-DeAmicis',
+    'sottotitolo'  => 'Accesso Rapido agli Strumenti Digitali – capuanadeamicis.it',
+    'novita_giorni' => '21',
+    'url_focus'     => 'https://capuanadeamicis.it/focus'
 ];
 
 // Inizializzazione file JSON se vuoto
