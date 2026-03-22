@@ -1,0 +1,243 @@
+{
+    "categories": [
+        {
+            "id": "cat_1",
+            "name": "Area Didattica e Innovazione",
+            "order": 0
+        },
+        {
+            "id": "cat_2",
+            "name": "Area Gestione e Servizi per il Personale",
+            "order": 2
+        },
+        {
+            "id": "cat_3",
+            "name": "Area Comunicazione",
+            "order": 1
+        },
+        {
+            "id": "69bc257af3dbe",
+            "name": "Area Fuori Categoria",
+            "order": 3
+        }
+    ],
+    "items": [
+        {
+            "id": "1",
+            "cat_id": "cat_1",
+            "title": "\ud83e\udd16 Piano Utilizzo IA (P.U.I.A.)",
+            "url": "https:\/\/capuanadeamicis.it\/puia",
+            "desc": "Area di supporto per l'Intelligenza Artificiale e Prompt Didattici",
+            "icon": "",
+            "order": 0,
+            "publish_date": "2026-03-02",
+            "icon_emoji": ""
+        },
+        {
+            "id": "2",
+            "cat_id": "cat_1",
+            "title": "\ud83d\udcd6 Progetto N.E.S.",
+            "url": "https:\/\/capuanadeamicis.it\/nes",
+            "desc": "Novit\u00e0 e Nuove Esperienze di Scuola",
+            "icon": "",
+            "order": 1,
+            "publish_date": "2025-12-18",
+            "icon_emoji": ""
+        },
+        {
+            "id": "3",
+            "cat_id": "cat_1",
+            "title": "\ud83c\udd5f\ud83c\udd53\ud83c\udd5f Piani Didattici Personalizzati",
+            "url": "https:\/\/capuanadeamicis.it\/alunni",
+            "desc": "Redigere PDP alunni in condivisione",
+            "icon": "",
+            "order": 3,
+            "publish_date": "2026-03-04",
+            "icon_emoji": ""
+        },
+        {
+            "id": "4",
+            "cat_id": "cat_3",
+            "title": "\ud83d\udcda Biblioteca Scolastica",
+            "url": "https:\/\/capuanadeamicis.it\/biblioteca",
+            "desc": "Gestione Prestiti Biblioteca scolastica",
+            "icon": "",
+            "order": 7,
+            "publish_date": "2026-02-12",
+            "icon_emoji": ""
+        },
+        {
+            "id": "5",
+            "cat_id": "cat_1",
+            "title": "\ud83c\udf93 Sostituzioni Docenti \u2013 Oggi",
+            "url": "https:\/\/capuanadeamicis.it\/sostituzioni\/oggi",
+            "desc": "Sostituzioni docenti aggiornate in tempo reale",
+            "icon": "",
+            "order": 2,
+            "publish_date": "2026-02-02",
+            "icon_emoji": ""
+        },
+        {
+            "id": "6",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udd52 Report Banca Ore",
+            "url": "https:\/\/capuanadeamicis.it\/eccedenza",
+            "desc": "Report Banca ore e ore eccedenti",
+            "icon": "",
+            "order": 13,
+            "publish_date": "2025-10-15",
+            "icon_emoji": ""
+        },
+        {
+            "id": "7",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udcc6 Prenotazione Aule (Sperimentale per Test)",
+            "url": "https:\/\/capuanadeamicis.it\/prenota",
+            "desc": "Sistema sperimentale prenotazione ambienti scolastici",
+            "icon": "",
+            "order": 12,
+            "publish_date": "2026-03-18",
+            "icon_emoji": ""
+        },
+        {
+            "id": "8",
+            "cat_id": "cat_3",
+            "title": "\u270d\ud83c\udffb Segreteria - Strumenti",
+            "url": "https:\/\/capuanadeamicis.it\/segreteria",
+            "desc": "Modulistica per il personale scolastico e Famiglie",
+            "icon": "",
+            "order": 8,
+            "publish_date": "",
+            "icon_emoji": ""
+        },
+        {
+            "id": "9",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udde3\ufe0f Assemblee Sindacali",
+            "url": "https:\/\/capuanadeamicis.it\/assemblee",
+            "desc": "Calendario assemblee con link ai moduli adesioni e ore spese a.s. 2025-2026",
+            "icon": "",
+            "order": 15,
+            "publish_date": "",
+            "icon_emoji": ""
+        },
+        {
+            "id": "10",
+            "cat_id": "cat_3",
+            "title": "\ud83e\uddd1\u200d\ud83e\uddd1\u200d\ud83e\uddd2\u200d\ud83e\uddd2 Circolari Famiglia",
+            "url": "https:\/\/capuanadeamicis.it\/circolarifamiglia",
+            "desc": "Canale ufficiale circolari",
+            "icon": "",
+            "order": 6,
+            "publish_date": "2025-10-01",
+            "icon_emoji": ""
+        },
+        {
+            "id": "11",
+            "cat_id": "cat_3",
+            "title": "\ud83c\udf99\ufe0f Podcast Istituto",
+            "url": "https:\/\/capuanadeamicis.it\/podcast",
+            "desc": "Valorizziamo il nostro Istituto",
+            "icon": "",
+            "order": 10,
+            "publish_date": "2025-12-18",
+            "icon_emoji": ""
+        },
+        {
+            "id": "12",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udce3 Comunicati Generali",
+            "url": "https:\/\/capuanadeamicis.it\/comunicati",
+            "desc": "Comunicazioni extra-circolari e sindacali",
+            "icon": "",
+            "order": 14,
+            "publish_date": "",
+            "icon_emoji": ""
+        },
+        {
+            "id": "13",
+            "cat_id": "69bc257af3dbe",
+            "title": "\u25c6\u2500\u25b6 Curriculum Vitae",
+            "url": "https:\/\/capuanadeamicis.it\/cv",
+            "desc": "Generatore CV formato Europeo",
+            "icon": "",
+            "order": 18,
+            "publish_date": "",
+            "icon_emoji": "CV"
+        },
+        {
+            "id": "14",
+            "cat_id": "cat_3",
+            "title": "\u24d5 Pagina Facebook d'Isituto",
+            "url": "https:\/\/capuanadeamicis.it\/facebook",
+            "desc": "Social Media ufficiale",
+            "icon": "",
+            "order": 9,
+            "publish_date": "",
+            "icon_emoji": ""
+        },
+        {
+            "id": "69bc2ad878e14",
+            "cat_id": "69bc257af3dbe",
+            "title": "\ud83d\udcc6 Calendari solare e A.S.",
+            "url": "https:\/\/capuanadeamicis.it\/calendari",
+            "desc": "Varie tipologie di calendari",
+            "publish_date": "",
+            "order": 19
+        },
+        {
+            "id": "69bc2b0f27cb4",
+            "cat_id": "69bc257af3dbe",
+            "title": "\ud83c\udfe0 Planimetrie Plesso Capuana",
+            "url": "https:\/\/capuanadeamicis.it\/classi",
+            "desc": "Planimetrie e classi del plesso",
+            "publish_date": "",
+            "order": 20
+        },
+        {
+            "id": "69bc2b8943d24",
+            "cat_id": "cat_3",
+            "title": "\ud83d\udcdd Prove INVALSI",
+            "url": "https:\/\/info.capuanadeamicis.it\/invalsi",
+            "desc": "News e Reindirizzamento al link per la prova al Pc",
+            "publish_date": "",
+            "order": 11
+        },
+        {
+            "id": "69bc2c7daec58",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udcd5 Modelli per docenti",
+            "url": "https:\/\/capuanadeamicis.it\/verbali",
+            "desc": "Verbali e Programmazioni",
+            "publish_date": "",
+            "order": 16
+        },
+        {
+            "id": "69bc3db4e529e",
+            "cat_id": "cat_2",
+            "title": "\ud83d\udcf8 Loghi Ufficiali d'Istituto",
+            "url": "https:\/\/info.capuanadeamicis.it\/loghi-e-banner",
+            "desc": "Tutti i loghi,  timbri, intestazioni, banner...",
+            "publish_date": "",
+            "order": 17
+        },
+        {
+            "id": "69bcdcc5bbffc",
+            "cat_id": "cat_3",
+            "title": "\ud83c\uddee\ud83c\uddf9 P.T.O.F.",
+            "url": "https:\/\/ptof.capuanadeamicis.it",
+            "desc": "Piano Triennale dell'Offerta Formativa",
+            "publish_date": "2025-09-01",
+            "order": 5
+        },
+        {
+            "id": "69bfb83d9d9ca",
+            "cat_id": "cat_3",
+            "title": "Esami di Stato",
+            "url": "https:\/\/capuanadeamicis.it\/esami\/calendario",
+            "desc": "Calendario e commissioni Esami di Stato classi terze",
+            "publish_date": "2026-03-23",
+            "order": 4
+        }
+    ]
+}
