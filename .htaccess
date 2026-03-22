@@ -1,0 +1,16 @@
+# ============================================================
+#  Focus – Accesso Rapido agli Strumenti Digitali
+#  Protezione accesso diretto ai file sensibili
+# ============================================================
+
+# --- Blocca accesso diretto a file sensibili ---
+<FilesMatch "^(functions\.php|database\.json|\.gitignore|CHANGELOG\.md|README\.md|LICENSE)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# --- Impedisce la navigazione delle cartelle (directory listing) ---
+Options -Indexes
+
+# --- Charset UTF-8 di default ---
+AddDefaultCharset UTF-8
