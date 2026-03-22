@@ -31,7 +31,6 @@ focuscapuana/
 ├── functions.php      # Configurazione e funzioni condivise
 ├── database.json      # Dati (categorie e card)
 ├── .htaccess          # Protezione accesso diretto ai file
-└── uploads/           # Cartella upload (se abilitata)
 ```
 
 ---
