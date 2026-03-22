@@ -129,24 +129,25 @@ if(isset($_POST['save_settings'])) {
         'footer_text2' => trim($_POST['footer_text2']),
         'sottotitolo'   => trim($_POST['sottotitolo']),
         'novita_giorni' => (int)$_POST['novita_giorni'],
+        'url_focus'     => trim($_POST['url_focus']),
         'cols_desktop' => trim($_POST['cols_desktop']),
     ];
     $lines = file('functions.php');
     $out = [];
     foreach($lines as $line) {
         foreach($map as $key => $val) {
-            // Match: 'key' => "value"  oppure  "key" => "value"  (valori in doppie virgolette)
-            if(preg_match('/[\'"]' . $key . '[\'"]\\s*=>\\s*"/', $line)) {
+            // Match:  'key' => 'anything'  or  "key" => "anything"
+            if(preg_match('/([\'"]'.$key.'[\'"]\s*=>\s*[\'"])/', $line)) {
                 $line = preg_replace(
-                    '/([\'"]' . $key . '[\'"]\\s*=>\\s*")[^"]*(")/s',
-                    '${1}' . str_replace(['\\', '$'], ['\\\\', '\$'], $val) . '${2}',
+                    '/([\'"]'.$key.'[\'"]\s*=>\s*[\'"])[^\'"]*([\'"])/',
+                    '${1}'.str_replace(['\\','$'], ['\\\\','\$'], $val).'${2}',
                     $line
                 );
             }
         }
         $out[] = $line;
     }
-        file_put_contents('functions.php', implode('', $out));
+    file_put_contents('functions.php', implode('', $out));
     header("Location: admin.php?ok=settings"); exit;
 }
 
@@ -386,6 +387,7 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
         $s_sottotitolo = getCfgVal($cfg_raw,'sottotitolo');
         $s_novita   = getCfgVal($cfg_raw,'novita_giorni') ?: '30';
         $s_cols     = getCfgVal($cfg_raw,'cols_desktop') ?: '3';
+        $s_url_focus = getCfgVal($cfg_raw,'url_focus');
         ?>
         <form method="POST" class="row g-3">
             <div class="col-md-6">
@@ -399,6 +401,10 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
             <div class="col-12">
                 <label class="form-label">Sottotitolo home (sotto il nome istituto)</label>
                 <input type="text" name="sottotitolo" class="form-control" value="<?= htmlspecialchars($s_sottotitolo) ?>">
+            </div>
+            <div class="col-12">
+                <label class="form-label">🔗 URL QR code stampa <small class="text-muted">(QR visibile in alto a destra nella versione stampata)</small></label>
+                <input type="url" name="url_focus" class="form-control" placeholder="https://capuanadeamicis.it/focus" value="<?= htmlspecialchars($s_url_focus) ?>">
             </div>
             <div class="col-md-5">
                 <label class="form-label">Footer riga 1 (copyright ecc.)</label>
