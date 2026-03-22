@@ -81,6 +81,23 @@
             border-color: #a5d6a7;
         }
 
+        /* Switcher colonne utente */
+        .col-switcher {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .col-switcher span { font-size: 0.72rem; color: #888; white-space: nowrap; }
+        .col-switcher button {
+            width: 28px; height: 24px; font-size: 0.72rem; font-weight: 700;
+            border: 1.5px solid #bbb; border-radius: 5px;
+            background: #fff; color: #555; cursor: pointer;
+            transition: all 0.15s; line-height: 1; padding: 0;
+        }
+        .col-switcher button:hover { border-color: var(--blue-main); color: var(--blue-main); }
+        .col-switcher button.active { background: var(--blue-main); border-color: var(--blue-main); color: #fff; }
+
         .qr-img { width: 80px; height: 80px; flex-shrink: 0; }
 
         footer {
@@ -93,6 +110,11 @@
         /* ===== PRINT ===== */
         @media print {
             .no-print { display: none !important; }
+
+            /* Header due colonne in stampa */
+            .header-inner { display: flex !important; align-items: flex-start !important; }
+            .header-left  { text-align: left !important; }
+            .header-right { display: flex !important; }
 
             /* 1. TUTTO IN NERO pieno – nessun grigio/colore tenue */
             * { color: #000 !important; background: transparent !important;
@@ -148,27 +170,62 @@
 <body>
 
 <div class="container py-4">
-    <header class="text-center mb-4">
-        <div class="d-flex justify-content-end mb-1 no-print">
-            <button onclick="window.print()" class="btn btn-dark btn-sm shadow-sm" title="Stampa / Esporta PDF">
-                🖨️ Stampa
-            </button>
+    <header class="mb-4">
+        <div class="header-inner d-flex align-items-start gap-3">
+
+            <!-- Sinistra: titolo + sottotitolo + switcher colonne -->
+            <div class="header-left flex-grow-1">
+                <h1 class="fw-bold mb-1" style="color: var(--blue-dark);"><?= htmlspecialchars($CONFIG['istituto']) ?></h1>
+                <p class="lead text-muted mb-2"><?php
+                    $sub = $CONFIG['sottotitolo'] ?? '';
+                    echo preg_replace_callback(
+                        '#((?:https?://)?[\w-]+(?:\.[\w-]+)+(?:/[^\s–]*)?)#u',
+                        function($m) {
+                            $href = preg_match('#^https?://#', $m[1]) ? $m[1] : 'https://' . $m[1];
+                            return '<a href="' . htmlspecialchars($href) . '" target="_blank" rel="noopener"'
+                                 . ' style="color:inherit;text-decoration:underline dotted;">'
+                                 . htmlspecialchars($m[1]) . '</a>';
+                        },
+                        htmlspecialchars($sub)
+                    );
+                ?></p>
+                <!-- Switcher colonne: solo desktop, invisibile in stampa -->
+                <div class="col-switcher no-print d-none d-md-flex">
+                    <span>Colonne:</span>
+                    <button onclick="setCols(1)" data-c="1">1</button>
+                    <button onclick="setCols(2)" data-c="2">2</button>
+                    <button onclick="setCols(3)" data-c="3">3</button>
+                    <button onclick="setCols(4)" data-c="4">4</button>
+                </div>
+            </div>
+
+            <!-- Destra: tasto Stampa + QR centrati. Solo desktop, ma QR visibile anche in stampa. -->
+            <div class="header-right d-none d-md-flex flex-column align-items-center gap-1 flex-shrink-0" style="width:90px;">
+                <button onclick="window.print()"
+                        class="btn btn-dark btn-sm shadow-sm no-print w-100"
+                        title="Stampa / Esporta PDF">
+                    🖨️ Stampa
+                </button>
+                <?php if(!empty($CONFIG['url_focus'])): ?>
+                <div class="text-center" style="line-height:1.2;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=<?= urlencode($CONFIG['url_focus']) ?>"
+                         width="80" height="80" alt="QR accesso rapido"
+                         style="display:block;border:1px solid #dde;">
+                    <span style="font-size:0.48rem;color:#777;font-family:'Courier New',monospace;word-break:break-all;display:block;">
+                        <?= htmlspecialchars(preg_replace('#^https?://#', '', $CONFIG['url_focus'])) ?>
+                    </span>
+                </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Mobile: solo tasto Stampa -->
+            <div class="d-flex d-md-none flex-shrink-0 no-print">
+                <button onclick="window.print()" class="btn btn-dark btn-sm shadow-sm" title="Stampa / Esporta PDF">
+                    🖨️ Stampa
+                </button>
+            </div>
+
         </div>
-        <h1 class="fw-bold" style="color: var(--blue-dark);"><?= htmlspecialchars($CONFIG['istituto']) ?></h1>
-        <p class="lead text-muted"><?php
-            // Rende cliccabili i token URL nel sottotitolo (es. "capuanadeamicis.it/focus")
-            $sub = $CONFIG['sottotitolo'] ?? '';
-            echo preg_replace_callback(
-                '#((?:https?://)?[\w-]+(?:\.[\w-]+)+(?:/[^\s–]*)?)#u',
-                function($m) {
-                    $href = preg_match('#^https?://#', $m[1]) ? $m[1] : 'https://' . $m[1];
-                    return '<a href="' . htmlspecialchars($href) . '" target="_blank" rel="noopener"'
-                         . ' style="color:inherit;text-decoration:underline dotted;">'
-                         . htmlspecialchars($m[1]) . '</a>';
-                },
-                htmlspecialchars($sub)
-            );
-        ?></p>
     </header>
 
     <?php
@@ -178,10 +235,10 @@
             $items = array_values(array_filter($db['items'], fn($i)=>$i['cat_id']==$cat['id']));
             if (empty($items)) continue;
             usort($items, fn($a,$b)=>$a['order']<=>$b['order']);
-            // Colonne configurabili da admin
-            $cols = (int)($CONFIG['cols_desktop'] ?? 3);
+            // Colonne default da config (fallback senza JS)
+            $cols = (int)($CONFIG['cols_desktop'] ?? 2);
             $col_map = [1=>'col-12', 2=>'col-md-6', 3=>'col-md-6 col-lg-4', 4=>'col-md-6 col-lg-3'];
-            $col_class = $col_map[$cols] ?? 'col-md-6 col-lg-4';
+            $col_class = $col_map[$cols] ?? 'col-md-6';
     ?>
         <div class="category-block">
             <div class="page-break-spacer"></div>
@@ -205,7 +262,7 @@
                         $is_new = ($diff >= 0 && $diff <= $giorni);
                     }
                 ?>
-                <div class="<?= $col_class ?>">
+                <div class="<?= $col_class ?>" data-col-item>
                     <div class="card-custom p-3 shadow-sm<?= $is_scheduled ? ' is-scheduled' : '' ?>">
                         <div class="card-inner d-flex align-items-start gap-2">
                             <div class="card-text flex-grow-1" style="min-width:0;">
@@ -250,15 +307,41 @@
         </p>
         <small><?= htmlspecialchars($CONFIG['footer_text2'] ?? 'Realizzato per '.$CONFIG['istituto']) ?></small>
         <div class="mt-2">
-            <a href="https://github.com/sebastianobasile?tab=repositories"
-               target="_blank" rel="noopener"
+            <a href="https://github.com/sebastianobasile?tab=repositories" target="_blank" rel="noopener"
                style="color:#888;font-size:0.78rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
                 Progetto su GitHub – superscuola
             </a>
         </div>
     </div>
 </footer>
 
+<script>
+const COL_CLASSES = {
+    1: ['col-12'],
+    2: ['col-md-6'],
+    3: ['col-md-6', 'col-lg-4'],
+    4: ['col-md-6', 'col-lg-3']
+};
+const ALL_COL = ['col-12','col-md-6','col-lg-4','col-lg-3'];
+
+function setCols(n) {
+    document.querySelectorAll('[data-col-item]').forEach(el => {
+        ALL_COL.forEach(c => el.classList.remove(c));
+        COL_CLASSES[n].forEach(c => el.classList.add(c));
+    });
+    document.querySelectorAll('.col-switcher button').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.c) === n);
+    });
+    try { localStorage.setItem('focus_cols', n); } catch(e) {}
+}
+
+(function() {
+    const def = <?= (int)($CONFIG['cols_desktop'] ?? 2) ?>;
+    let saved;
+    try { saved = parseInt(localStorage.getItem('focus_cols')); } catch(e) {}
+    setCols((saved >= 1 && saved <= 4) ? saved : def);
+})();
+</script>
 </body>
 </html>
