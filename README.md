@@ -76,7 +76,7 @@ Aggiungere un file `.htaccess` nella root per bloccare l'accesso diretto a `func
 
 ---
 
-## 🖼️ Screenshot
+## 🖼️ Anteprima
 
 *(Inserire screenshot nella cartella `screenshots/`)*
 
