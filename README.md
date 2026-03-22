@@ -1,6 +1,7 @@
 # 🔗 Focus – Accesso Rapido agli Strumenti Digitali
 
 [![Sostieni il progetto](https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070ba?style=for-the-badge&logo=paypal)](https://paypal.me/superscuola)
+[![Licenza: GPL v3](https://img.shields.io/badge/Licenza-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Pannello web per l'accesso rapido agli strumenti digitali di un istituto scolastico.  
 Consente di raggruppare link utili in **aree tematiche**, con QR code generato automaticamente per ogni risorsa, badge di novità, pubblicazione programmata delle card e un pannello di amministrazione protetto da password.
@@ -84,9 +85,8 @@ Aggiungere un file `.htaccess` nella root per bloccare l'accesso diretto a `func
 
 ## 📄 Licenza
 
-Distribuito con licenza **MIT**.  
+Distribuito con licenza **GPL v3**.  
 Puoi usare, modificare e ridistribuire liberamente questo strumento, anche per altre scuole.  
-Consulta il file [LICENSE](LICENSE) per i dettagli.
 
 ---
 
