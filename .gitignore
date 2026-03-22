@@ -1,9 +1,6 @@
 # Dati reali dell'istituto – NON pubblicare
 database.json
 
-# Cartella upload
-uploads/
-
 # File di sistema
 .DS_Store
 Thumbs.db
