@@ -163,6 +163,8 @@
             .date-badge { font-size: 0.57rem !important; padding: 1px 3px !important; }
 
             footer { display: none !important; }
+            /* Crediti stampati */
+            .print-credits { display: block !important; }
             @page { size: A4; margin: 1.5cm; }
         }
     </style>
@@ -296,6 +298,12 @@
             </div>
         </div>
     <?php endforeach; endif; ?>
+</div>
+
+<!-- Crediti visibili solo in stampa -->
+<div class="print-credits" style="display:none; text-align:center; margin-top:18pt; padding-top:8pt; border-top:1px solid #aaa; font-size:8pt; color:#444;">
+    <?= htmlspecialchars($CONFIG['footer_text']) ?> &nbsp;·&nbsp;
+    <?= htmlspecialchars($CONFIG['footer_text2'] ?? 'Realizzato per '.$CONFIG['istituto']) ?>
 </div>
 
 <footer class="text-center no-print">
