@@ -190,6 +190,22 @@ if(isset($_GET['del_item'])) {
     save_db($db); header("Location: admin.php"); exit;
 }
 
+// Salva credenziali strumento
+if(isset($_POST['save_credentials'])) {
+    $cid = $_POST['cred_item_id'];
+    foreach($db['items'] as &$it) {
+        if($it['id'] === $cid) {
+            $it['pw_user']  = trim($_POST['pw_user']  ?? '');
+            $it['pw_admin'] = trim($_POST['pw_admin'] ?? '');
+            $it['cred_notes'] = trim($_POST['cred_notes'] ?? '');
+            break;
+        }
+    }
+    unset($it);
+    save_db($db);
+    header("Location: admin.php?ok=cred"); exit;
+}
+
 // AJAX: riordina items (e aggiorna cat_id se spostato tra aree)
 if(isset($_POST['update_order'])) {
     $orders  = $_POST['order'];   // array di id nell'ordine corretto
@@ -308,6 +324,14 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
         /* Empty state */
         .empty-cat { color:#aab; font-size:.82rem; font-style:italic; padding:6px 4px 10px; }
 
+        /* Cred indicator */
+        .cred-dot {
+            display:inline-block; width:7px; height:7px;
+            background:#28a745; border-radius:50%; margin-left:5px;
+            vertical-align:middle; flex-shrink:0;
+            box-shadow:0 0 0 2px #c3f0cc;
+        }
+
         /* Inline icon button (no bg) */
         .btn-icon-inline {
             background:none; border:none; padding:0 2px; cursor:pointer;
@@ -332,7 +356,7 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
 <div class="container-fluid px-3 px-md-4" style="max-width:980px;">
 
     <?php
-    $ok_msgs = ['cat'=>'✅ Area creata!','item'=>'✅ Strumento aggiunto!','edit'=>'✅ Strumento aggiornato!','rename'=>'✅ Area rinominata!','settings'=>'✅ Impostazioni salvate!'];
+    $ok_msgs = ['cat'=>'✅ Area creata!','item'=>'✅ Strumento aggiunto!','edit'=>'✅ Strumento aggiornato!','rename'=>'✅ Area rinominata!','settings'=>'✅ Impostazioni salvate!','cred'=>'✅ Credenziali salvate!'];
     if(isset($_GET['ok']) && isset($ok_msgs[$_GET['ok']])): ?>
     <div class="alert alert-success alert-dismissible fade show rounded-3 py-2" role="alert">
         <?= $ok_msgs[$_GET['ok']] ?>
@@ -514,6 +538,18 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
                         </div>
 
                         <div class="item-actions">
+                            <button class="btn btn-sm position-relative"
+                                style="background:#f0f6ff;border:1.5px solid #c8d8f0;color:#2255aa;"
+                                title="Credenziali / Password"
+                                onclick='openCredModal(<?= json_encode([
+                                    "id"         => $it["id"],
+                                    "title"      => $it["title"],
+                                    "pw_user"    => $it["pw_user"]    ?? "",
+                                    "pw_admin"   => $it["pw_admin"]   ?? "",
+                                    "cred_notes" => $it["cred_notes"] ?? ""
+                                ], JSON_HEX_APOS|JSON_HEX_QUOT) ?>)'>
+                                🔑<?php if(!empty($it['pw_user']) || !empty($it['pw_admin']) || !empty($it['cred_notes'])): ?><span class="cred-dot" title="Credenziali presenti"></span><?php endif; ?>
+                            </button>
                             <button class="btn btn-warning btn-sm"
                                 onclick='openEditModal(<?= json_encode([
                                     "id"           => $it["id"],
@@ -616,6 +652,67 @@ usort($db['items'],      fn($a,$b)=>$a['order']<=>$b['order']);
     </div>
 </div>
 
+<!-- ===== MODAL CREDENZIALI ===== -->
+<div class="modal fade" id="credModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:480px;">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#1a3a6b;">
+                <h5 class="modal-title text-white">🔑 Credenziali Strumento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST">
+                <div class="modal-body pb-2">
+                    <input type="hidden" name="cred_item_id" id="cred-item-id">
+                    <div id="cred-tool-name" class="mb-3 fw-bold text-center"
+                         style="font-size:.92rem;color:#1a3a6b;background:#e8f0fb;border-radius:8px;padding:8px 12px;"></div>
+
+                    <!-- Password Utente -->
+                    <div class="mb-3">
+                        <label class="form-label">👤 Password Utente</label>
+                        <div class="input-group">
+                            <input type="text" name="pw_user" id="cred-pw-user"
+                                   class="form-control font-monospace"
+                                   placeholder="Password accesso standard"
+                                   autocomplete="off">
+                            <button type="button" class="btn btn-outline-secondary"
+                                    onclick="copyField('cred-pw-user')" title="Copia">📋</button>
+                        </div>
+                    </div>
+
+                    <!-- Password Super Admin -->
+                    <div class="mb-3">
+                        <label class="form-label">🛡️ Password Super Amministratore</label>
+                        <div class="input-group">
+                            <input type="text" name="pw_admin" id="cred-pw-admin"
+                                   class="form-control font-monospace"
+                                   placeholder="Password admin / superadmin"
+                                   autocomplete="off">
+                            <button type="button" class="btn btn-outline-secondary"
+                                    onclick="copyField('cred-pw-admin')" title="Copia">📋</button>
+                        </div>
+                    </div>
+
+                    <!-- Note libere -->
+                    <div class="mb-1">
+                        <label class="form-label">📝 Note libere</label>
+                        <textarea name="cred_notes" id="cred-notes" class="form-control"
+                                  rows="3"
+                                  placeholder="Es: URL recupero password, nome utente, istruzioni particolari…"
+                                  style="font-size:.87rem;resize:vertical;"></textarea>
+                    </div>
+
+                    <div id="cred-copy-msg" class="text-success text-center mt-2"
+                         style="font-size:.78rem;min-height:1.1rem;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="submit" name="save_credentials" class="btn btn-primary btn-sm">💾 Salva credenziali</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* Open edit modal */
@@ -642,7 +739,29 @@ function openRenameModal(id, name) {
     setTimeout(() => document.getElementById('rename-cat-name').select(), 300);
 }
 
-/* Sortable: categories */
+/* Credentials modal */
+const credModalEl = document.getElementById('credModal');
+const credModal   = new bootstrap.Modal(credModalEl);
+function openCredModal(data) {
+    document.getElementById('cred-item-id').value  = data.id;
+    document.getElementById('cred-tool-name').textContent = data.title;
+    document.getElementById('cred-pw-user').value  = data.pw_user;
+    document.getElementById('cred-pw-admin').value = data.pw_admin;
+    document.getElementById('cred-notes').value    = data.cred_notes;
+    document.getElementById('cred-copy-msg').textContent = '';
+    credModal.show();
+}
+function copyField(id) {
+    const val = document.getElementById(id).value;
+    if(!val.trim()) return;
+    navigator.clipboard.writeText(val).then(() => {
+        const msg = document.getElementById('cred-copy-msg');
+        msg.textContent = '✅ Copiato negli appunti!';
+        setTimeout(() => msg.textContent = '', 2000);
+    });
+}
+
+
 Sortable.create(document.getElementById('cat-sortable'), {
     animation: 200,
     handle: '.cat-handle',
